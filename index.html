@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FarmTech Solutions | ICT Tools for Livestock Farming</title>
+  <link rel="stylesheet" href="style.css">
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<script type="text/javascript">
+  (function(){
+    emailjs.init('-rQGw1iCaZtgGAkKg');  // Use your public key
+  })();
+</script>
+
+</head>
+<body style="background-image: url('background.jpg'); background-size: cover;">
+
+  <!-- HEADER SECTION (Visible before login) -->
+  <header class="hero" style="background-image: url('login.jpg');">
+    <div class="overlay">
+      <img src="images/logo.jpg" alt="FarmTech Logo" class="logo">
+      <h1>BUSALI LIVESTOCK FARMING SYSTEM</h1>
+      <h2>ICT Tools for Livestock Farming</h2>
+      <p>Empowering Farmers with Technology</p>
+      <p>Enhancing Livestock Productivity | Improving Animal Health | Boosting Farm Income</p>
+    </div>
+  </header>
+
+  <!-- LOGIN SECTION (Visible when login is selected) -->
+  <section id="login" style="display:block; text-align: center;">
+    <h2>User Login</h2>
+    <form id="login-form" style="max-width: 400px; margin: 0 auto;">
+      <div class="form-group">
+        <label for="login-username">Username/Email:</label>
+        <input type="text" id="login-username" placeholder="Enter your username or email" required>
+      </div>
+      
+      <div class="form-group">
+        <label for="login-password">Password:</label>
+        <input type="password" id="login-password" placeholder="Enter your password" required>
+      </div>
+
+      <button type="submit" class="main-btn">Log In</button>
+      <p><a href="#">Forgot Password?</a> | <a href="#" id="create-account-link" onclick="toggleForm()">Create Account</a></p>
+    </form>
+
+    <!-- Registration Form -->
+    <form id="register-form" style="display:none; max-width: 400px; margin: 0 auto;">
+      <h2>Create Account</h2>
+      <div class="form-group">
+        <label for="reg-username">Username:</label>
+        <input type="text" id="reg-username" placeholder="Enter your username" required>
+      </div>
+      
+      <div class="form-group">
+        <label for="reg-email">Email:</label>
+        <input type="email" id="reg-email" placeholder="Enter your email" required>
+      </div>
+
+      <div class="form-group">
+        <label for="reg-password">Password:</label>
+        <input type="password" id="reg-password" placeholder="Enter your password" required>
+      </div>
+
+      <div class="form-group">
+        <label for="reg-confirm-password">Confirm Password:</label>
+        <input type="password" id="reg-confirm-password" placeholder="Confirm your password" required>
+      </div>
+
+      <button type="submit" class="main-btn">Register</button>
+
+      <p><a href="#" id="toggle-login-link" onclick="toggleForm()">Already have an account? Log in here</a></p>
+    </form>
+  </section>
+
+  <!-- FARMER DASHBOARD (Visible after login) -->
+  <section id="dashboard" style="display:none;">
+    <header class="dashboard-header">
+      <div class="container">
+        <nav>
+          <ul>
+            <li><button class="btn" id="profile-btn" onclick="toggleContent('profile-content')">Profile</button></li>
+            <li><button class="btn" id="dashboard-btn" onclick="toggleContent('dashboard-content')">Dashboard</button></li>
+            <li><button class="btn" id="services-btn" onclick="toggleContent('services-content')">Explore Services</button></li>
+            <li><button class="btn" id="report-btn" onclick="openModal('report-modal')">Report an Issue</button></li>
+            <li><button class="btn" id="download-btn" onclick="downloadResources()">Download Resources</button></li>
+            <li><button class="btn" id="contact-btn" onclick="openModal('contact-modal')">Contact Us</button></li>
+            <li><button class="btn" id="feedback-btn" onclick="openModal('feedback-modal')">Give Feedback</button></li>
+            <li><button class="btn" id="logout-btn" onclick="logout()">Logout</button></li> <!-- Logout Button -->
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+    <!-- Dynamic Content Areas -->
+    <section id="profile-content" class="form-container">
+      <h2>Profile</h2>
+      <p>View and manage your personal profile, track your farm’s livestock, and access past performance data.</p>
+    </section>
+
+    <section id="dashboard-content" class="form-container">
+      <h2>Dashboard Overview</h2>
+      <p>Welcome to your farm’s central hub. Access a real-time overview of livestock health, productivity trends, and ongoing issues.</p>
+    </section>
+
+    <section id="services-content" class="form-container">
+      <h2>Explore Services</h2>
+      <button onclick="toggleContent('productivity-form')">Livestock Productivity</button>
+      <button onclick="toggleContent('disease-form')">Disease Control</button>
+      <button onclick="toggleContent('income-form')">Household Income</button>
+    </section>
+
+    <!-- Forms under Explore Services -->
+    <section id="productivity-form" class="form-container">
+      <h2>Livestock Productivity Form</h2>
+      <form id="animalForm" name="animalForm" method="post" onsubmit="saveData(event, 'animaltable')">
+        <div class="form-group">
+          <label for="animalEmail">Email:</label>
+          <input id="animalEmail" name="animalEmail" type="email" placeholder="Email" required><br>
+        </div>
+
+        <div class="form-group">
+          <label for="animalType">Select Animal Type:</label>
+          <select id="animalType" name="animalType" required>
+            <option value="">-- Select Animal --</option>
+            <option value="Cattle">Cattle</option>
+            <option value="Goat">Goat</option>
+            <option value="Sheep">Sheep</option>
+            <option value="Poultry">Poultry</option>
+            <option value="Pig">Pig</option>
+            <option value="Rabbit">Rabbit</option>
+            <option value="Donkey">Donkey</option>
+          </select><br>
+        </div>
+
+        <div class="form-group">
+          <label for="animalQty">Quantity:</label>
+          <input id="animalQty" name="animalQty" type="number" placeholder="Quantity" required><br>
+        </div>
+
+        <div class="form-group">
+          <label for="animalImg">Upload Image:</label>
+          <input id="animalImg" name="animalImg" type="file" accept="image/*" onchange="previewImage(event, 'animalpreview')"><br>
+        </div>
+
+        <div class="form-group">
+          <button type="submit" class="main-btn">Submit</button>
+        </div>
+      </form>
+      <img id="animalpreview" class="preview" alt="Animal Preview"><br>
+      <table id="animaltable">
+        <tr><th>User</th><th>Date</th><th>Email</th><th>Animal</th><th>Quantity</th></tr>
+      </table>
+    </section>
+
+    <section id="disease-form" class="form-container">
+      <h2>Disease Control Form</h2>
+      <form id="diseaseForm" name="diseaseForm" method="post" onsubmit="saveData(event, 'diseasetable')">
+        <div class="form-group">
+          <label for="diseaseEmail">Email:</label>
+          <input id="diseaseEmail" name="diseaseEmail" type="email" placeholder="Email" required><br>
+        </div>
+
+        <div class="form-group">
+          <label for="diseaseAnimal">Animal Type:</label>
+          <select id="diseaseAnimal" name="diseaseAnimal" required>
+            <option value="">-- Select Animal --</option>
+            <option value="Cattle">Cattle</option>
+            <option value="Goat">Goat</option>
+            <option value="Sheep">Sheep</option>
+            <option value="Poultry">Poultry</option>
+            <option value="Pig">Pig</option>
+            <option value="Rabbit">Rabbit</option>
+            <option value="Donkey">Donkey</option>
+          </select><br>
+        </div>
+
+        <div class="form-group">
+          <label for="diseaseName">Disease:</label>
+          <input id="diseaseName" name="diseaseName" type="text" placeholder="Disease" required><br>
+        </div>
+
+        <div class="form-group">
+          <label for="diseaseImg">Upload Image:</label>
+          <input id="diseaseImg" name="diseaseImg" type="file" accept="image/*" onchange="previewImage(event, 'diseasepreview')"><br>
+        </div>
+
+        <div class="form-group">
+          <button type="submit" class="main-btn">Submit</button>
+        </div>
+      </form>
+      <img id="diseasepreview" class="preview" alt="Disease Preview"><br>
+      <table id="diseasetable">
+        <tr><th>User</th><th>Date</th><th>Email</th><th>Animal</th><th>Disease</th></tr>
+      </table>
+    </section>
+
+    <section id="income-form" class="form-container">
+      <h2>Household Income Form</h2>
+      <form id="incomeForm" name="incomeForm" method="post" onsubmit="saveData(event, 'incometable')">
+        <div class="form-group">
+          <label for="incomeEmail">Email:</label>
+          <input id="incomeEmail" name="incomeEmail" type="email" placeholder="Email" required><br>
+        </div>
+
+        <div class="form-group">
+          <label for="incomeSource">Source of Income:</label>
+          <input id="incomeSource" name="incomeSource" type="text" placeholder="Source of Income" required><br>
+        </div>
+
+        <div class="form-group">
+          <label for="incomeAmount">Amount:</label>
+          <input id="incomeAmount" name="incomeAmount" type="number" placeholder="Amount" required><br>
+        </div>
+
+        <div class="form-group">
+          <label for="incomeQty">Quantity:</label>
+          <input id="incomeQty" name="incomeQty" type="number" placeholder="Quantity" required><br>
+        </div>
+
+        <div class="form-group">
+          <label for="incomeImg">Upload Image:</label>
+          <input id="incomeImg" name="incomeImg" type="file" accept="image/*" onchange="previewImage(event, 'incomepreview')"><br>
+        </div>
+
+        <div class="form-group">
+          <button type="submit" class="main-btn">Submit</button>
+        </div>
+      </form>
+      <img id="incomepreview" class="preview" alt="Income Preview"><br>
+      <table id="incometable">
+        <tr><th>User</th><th>Date</th><th>Email</th><th>Source</th><th>Amount</th><th>Quantity</th></tr>
+      </table>
+    </section>
+  </section>
+
+  <!-- Modals for Additional Sections -->
+  <div id="report-modal" class="modal">
+  <div class="modal-content">
+    <span class="close-btn" onclick="closeModal('report-modal')">&times;</span>
+    <h2>Report an Issue</h2>
+    <form id="report-form" onsubmit="submitReport(event)">
+      <label for="issue-type">Issue Type:</label>
+      <select id="issue-type">
+        <option value="Animal Health">Animal Health</option>
+        <option value="Website Bug">Website Bug</option>
+        <option value="Product Inquiry">Product Inquiry</option>
+      </select>
+
+      <label for="issue-description">Description:</label>
+      <textarea id="issue-description"></textarea>
+
+      <label for="issue-files">Attach Files:</label>
+      <input type="file" id="issue-files">
+
+      <button type="submit" class="btn">Submit</button>
+      <button type="button" class="btn" onclick="closeModal('report-modal')">Save as Draft</button>
+    </form>
+  </div>
+</div>
+
+  <!-- Contact Us Modal -->
+<div id="contact-modal" class="modal">
+  <div class="modal-content">
+    <span class="close-btn" onclick="closeModal('contact-modal')">&times;</span>
+    <h2>Contact Us</h2>
+    <div>
+      <label for="contact-email">Email:</label>
+      <input type="email" id="contact-email" placeholder="Your email"><br>
+    </div>
+    <div>
+      <label for="contact-message">Message:</label>
+      <textarea id="contact-message" placeholder="Your message here"></textarea><br>
+    </div>
+    <button onclick="submitContact()" class="main-btn">Send Message</button>
+  </div>
+</div>
+
+  <!-- JavaScript -->
+  <script>
+  // Function to toggle between login and registration forms
+  function toggleForm() {
+    const loginForm = document.getElementById('login-form');
+    const registerForm = document.getElementById('register-form');
+    if (loginForm.style.display === 'none') {
+      loginForm.style.display = 'block';
+      registerForm.style.display = 'none';
+    } else {
+      loginForm.style.display = 'none';
+      registerForm.style.display = 'block';
+    }
+  }
+
+  // Function to toggle content visibility (for dashboard views)
+  function toggleContent(contentId) {
+    const content = document.getElementById(contentId);
+    content.classList.toggle("active");
+  }
+
+  // Function to open modals
+  function openModal(modalId) {
+    const modal = document.getElementById(modalId);
+    modal.style.display = 'block';
+  }
+
+  // Function to close modals
+  function closeModal(modalId) {
+    const modal = document.getElementById(modalId);
+    modal.style.display = 'none';
+  }
+
+  // Handle Logout
+  function logout() {
+    alert('You have been logged out successfully.');
+    document.getElementById('dashboard').style.display = 'none';
+    document.getElementById('login').style.display = 'block';
+  }
+
+  // Handle Login Form Submission
+  document.getElementById('login-form').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const username = document.getElementById('login-username').value;
+    const password = document.getElementById('login-password').value;
+    let users = JSON.parse(localStorage.getItem('users')) || {};
+
+    if (users[username] && users[username].password === password) {
+      document.getElementById('login').style.display = 'none';
+      document.getElementById('dashboard').style.display = 'block';
+      alert("Login successful!");
+    } else {
+      alert("Invalid username or password.");
+    }
+  });
+
+  // Handle Registration Form Submission
+  document.getElementById('register-form').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const username = document.getElementById('reg-username').value;
+    const email = document.getElementById('reg-email').value;
+    const password = document.getElementById('reg-password').value;
+    const confirmPassword = document.getElementById('reg-confirm-password').value;
+
+    if (password === confirmPassword) {
+      let users = JSON.parse(localStorage.getItem('users')) || {};
+      users[username] = { username, email, password };
+      localStorage.setItem('users', JSON.stringify(users));
+      alert(`Registration successful for ${username}. You can now log in.`);
+      toggleForm(); // Switch back to login form
+    } else {
+      alert("Passwords do not match!");
+    }
+  });
+
+ // Function to trigger resource download
+function downloadResources() {
+  // Trigger the download of a specific resource (PDF in this case)
+  const link = document.createElement('a');
+  link.href = 'path/to/your/resource.pdf'; // Replace with actual file path
+  link.download = 'Farm_Resources.pdf'; // Replace with desired file name
+  link.click();
+}
+
+// Function to submit feedback
+function submitFeedback() {
+  const feedbackMessage = document.getElementById('feedback-message').value;
+  if (feedbackMessage) {
+    alert('Feedback submitted successfully!');
+    document.getElementById('feedback-modal').style.display = 'none'; // Close modal
+  } else {
+    alert('Please provide feedback before submitting.');
+  }
+}
+
+// Function to handle Contact Us form submission
+function submitContact() {
+  const contactEmail = document.getElementById('contact-email').value;
+  const contactMessage = document.getElementById('contact-message').value;
+  if (contactEmail && contactMessage) {
+    alert('Your message has been sent!');
+    document.getElementById('contact-modal').style.display = 'none'; // Close modal
+  } else {
+    alert('Please fill out both fields.');
+  }
+}
+
+  // Adjusted submit forms under Explore Services to prevent page reload (for form submissions)
+  function saveData(event, tableId) {
+    event.preventDefault(); // Prevent page reload
+    const formData = new FormData(event.target);
+    const table = document.getElementById(tableId);
+    const row = table.insertRow();
+    
+    // Insert form data as new table row
+    for (let [key, value] of formData.entries()) {
+      const cell = row.insertCell();
+      cell.textContent = value;
+    }
+
+    alert("Data submitted successfully!");
+  }
+
+  // Function to handle the "Report an Issue" form submission
+function submitReport(event) {
+  event.preventDefault(); // Prevent page reload when the form is submitted
+
+  // Capture form data
+  const issueType = document.getElementById('issue-type').value;
+  const issueDescription = document.getElementById('issue-description').value;
+  const issueFiles = document.getElementById('issue-files').files;
+
+  if (issueType && issueDescription) {
+    // You can process the data here, such as sending it to a server or saving it locally
+    alert(`Issue reported: ${issueType}\nDescription: ${issueDescription}`);
+
+    // Close the modal after successful submission
+    document.getElementById('report-modal').style.display = 'none';
+  } else {
+    alert("Please provide all the required details before submitting.");
+  }
+}
+
+</script>
+
+<!-- Feedback Modal -->
+<div id="feedback-modal" class="modal">
+  <div class="modal-content">
+    <span class="close-btn" onclick="closeModal('feedback-modal')">&times;</span>
+    <h2>Give Feedback</h2>
+    <textarea id="feedback-message" placeholder="Write your feedback here"></textarea><br>
+    <button onclick="submitFeedback()" class="main-btn">Submit</button>
+  </div>
+</div>
+
+<script>
+// Function to toggle between login and registration forms
+function toggleForm() {
+    const loginForm = document.getElementById('login-form');
+    const registerForm = document.getElementById('register-form');
+    if (loginForm.style.display === 'none') {
+        loginForm.style.display = 'block';
+        registerForm.style.display = 'none';
+    } else {
+        loginForm.style.display = 'none';
+        registerForm.style.display = 'block';
+    }
+}
+
+// Handle Livestock Productivity Form Submission
+document.getElementById('animalForm').addEventListener('submit', function(e) {
+    e.preventDefault(); // Prevent page reload
+
+    const formData = new FormData(e.target);
+    const data = {
+        email: formData.get('animalEmail'),
+        animalType: formData.get('animalType'),
+        quantity: formData.get('animalQty'),
+        animalImg: formData.get('animalImg') ? formData.get('animalImg').name : 'No image uploaded'
+    };
+
+    // Send data to EmailJS
+    emailjs.send('service_2kesr8p', 'template_ziwfw1x', {
+        from_email: data.email,
+        animal_type: data.animalType,
+        quantity: data.quantity,
+        animal_image: data.animalImg,
+        to_email: 'busalifarmingict@gmail.com' // Your email
+    })
+    .then(function(response) {
+        console.log('Email sent successfully', response);
+
+        // Create the WhatsApp link with the form data
+        const whatsappUrl = `https://wa.me/+254113042231?text=Livestock%20Productivity%20Form%0AEmail:%20${encodeURIComponent(data.email)}%0AAnimal:%20${encodeURIComponent(data.animalType)}%0AQuantity:%20${encodeURIComponent(data.quantity)}%0AImage:%20${encodeURIComponent(data.animalImg)}`;
+
+        // Redirect to WhatsApp
+        window.location.href = whatsappUrl;
+    }, function(error) {
+        console.log('Email sending failed', error);
+        alert('There was an error sending your data. Please try again.');
+    });
+});
+
+// Handle Disease Control Form Submission
+document.getElementById('diseaseForm').addEventListener('submit', function(e) {
+    e.preventDefault(); // Prevent page reload
+
+    const formData = new FormData(e.target);
+    const data = {
+        email: formData.get('diseaseEmail'),
+        animalType: formData.get('diseaseAnimal'),
+        disease: formData.get('diseaseName'),
+        diseaseImg: formData.get('diseaseImg') ? formData.get('diseaseImg').name : 'No image uploaded'
+    };
+
+    // Send data to EmailJS
+    emailjs.send('service_2kesr8p', 'template_ziwfw1x', {
+        from_email: data.email,
+        disease_type: data.animalType,
+        disease_name: data.disease,
+        disease_image: data.diseaseImg,
+        to_email: 'busalifarmingict@gmail.com' // Your email
+    })
+    .then(function(response) {
+        console.log('Email sent successfully', response);
+
+        // Create the WhatsApp link
+        const whatsappUrl = `https://wa.me/+254113042231?text=Disease%20Control%20Form%0AEmail:%20${encodeURIComponent(data.email)}%0AAnimal:%20${encodeURIComponent(data.animalType)}%0ADisease:%20${encodeURIComponent(data.disease)}%0AImage:%20${encodeURIComponent(data.diseaseImg)}`;
+
+        // Redirect to WhatsApp
+        window.location.href = whatsappUrl;
+    }, function(error) {
+        console.log('Email sending failed', error);
+        alert('There was an error sending your data. Please try again.');
+    });
+});
+
+// Handle Household Income Form Submission
+document.getElementById('incomeForm').addEventListener('submit', function(e) {
+    e.preventDefault(); // Prevent page reload
+
+    const formData = new FormData(e.target);
+    const data = {
+        email: formData.get('incomeEmail'),
+        source: formData.get('incomeSource'),
+        amount: formData.get('incomeAmount'),
+        quantity: formData.get('incomeQty'),
+        incomeImg: formData.get('incomeImg') ? formData.get('incomeImg').name : 'No image uploaded'
+    };
+
+    // Send data to EmailJS
+    emailjs.send('service_2kesr8p', 'template_ziwfw1x', {
+        from_email: data.email,
+        income_source: data.source,
+        income_amount: data.amount,
+        income_quantity: data.quantity,
+        income_image: data.incomeImg,
+        to_email: 'busalifarmingict@gmail.com' // Your email
+    })
+    .then(function(response) {
+        console.log('Email sent successfully', response);
+
+        // Create the WhatsApp link
+        const whatsappUrl = `https://wa.me/+254113042231?text=Household%20Income%20Form%0AEmail:%20${encodeURIComponent(data.email)}%0ASource:%20${encodeURIComponent(data.source)}%0AAmount:%20${encodeURIComponent(data.amount)}%0AQuantity:%20${encodeURIComponent(data.quantity)}%0AImage:%20${encodeURIComponent(data.incomeImg)}`;
+
+        // Redirect to WhatsApp
+        window.location.href = whatsappUrl;
+    }, function(error) {
+        console.log('Email sending failed', error);
+        alert('There was an error sending your data. Please try again.');
+    });
+});
+
+// Handle Contact Us Form Submission
+document.getElementById('contact-form').addEventListener('submit', function(e) {
+    e.preventDefault(); // Prevent page reload
+
+    const formData = new FormData(e.target);
+    const data = {
+        email: formData.get('contact-email'),
+        message: formData.get('contact-message')
+    };
+
+    // Send data to EmailJS
+    emailjs.send('service_2kesr8p', 'template_ziwfw1x', {
+        from_email: data.email,
+        message: data.message,
+        to_email: 'busalifarmingict@gmail.com' // Your email
+    })
+    .then(function(response) {
+        console.log('Email sent successfully', response);
+
+        // Create WhatsApp link
+        const whatsappUrl = `https://wa.me/+254113042231?text=Contact%20Us%20Message%0AEmail:%20${encodeURIComponent(data.email)}%0AMessage:%20${encodeURIComponent(data.message)}`;
+
+        // Redirect to WhatsApp
+        window.location.href = whatsappUrl;
+    }, function(error) {
+        console.log('Email sending failed', error);
+        alert('There was an error sending your message. Please try again.');
+    });
+});
+
+// Example debug statement for the livestock productivity form
+const data = {
+    email: formData.get('animalEmail'),
+    animalType: formData.get('animalType'),
+    quantity: formData.get('animalQty'),
+    animalImg: formData.get('animalImg') ? formData.get('animalImg').name : 'No image uploaded'
+};
+console.log(data);
+
+</script>
+
+</body>
+</html>
